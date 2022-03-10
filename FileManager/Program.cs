@@ -65,17 +65,36 @@ namespace FileManager
         {
             // Вывод файлов папки
             /*
+            ───────────────────────────────────────
             File.txt    File.txt    File.txt
             File.txt    File.txt    File.txt
             */
             
-            string[] files = Directory.GetFiles(String.Concat(fullPath));
+            Console.WriteLine("───────────────────────────────────────");
             
-            for (int i = 0; i < files.Length; i += 3)
+            string[] files = Directory.GetFiles(String.Concat(fullPath));
+
+            const int pageSize = 5;
+
+            // постраничный вывод элементов
+            for (int e = 1; e <= pageSize; e++)
             {
+                
+            }
+            
+            const int colonLength = 35;
+            const int colonAmount = 3;
+            
+            // вывод файлов в виде колонн
+            for (int i = 0; i < files.Length; i += colonAmount)
+            {
+                // остановка перечисления после выхода за предел массива
                 try
                 {
-                    Console.WriteLine($"{files[i],40} {files[i + 1],40} {files[i + 5],40}");
+                    for (int k = 0; k < colonAmount; k++)
+                    {
+                        Console.WriteLine($"{files[i + k], colonLength}");
+                    }
                 }
                 catch (IndexOutOfRangeException)
                 {
