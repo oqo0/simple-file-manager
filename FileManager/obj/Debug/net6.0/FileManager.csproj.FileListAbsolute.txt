@@ -1,0 +1,15 @@
+/home/oqpin/RiderProjects/FileManager/FileManager/bin/Debug/net6.0/FileManager
+/home/oqpin/RiderProjects/FileManager/FileManager/bin/Debug/net6.0/FileManager.deps.json
+/home/oqpin/RiderProjects/FileManager/FileManager/bin/Debug/net6.0/FileManager.runtimeconfig.json
+/home/oqpin/RiderProjects/FileManager/FileManager/bin/Debug/net6.0/FileManager.dll
+/home/oqpin/RiderProjects/FileManager/FileManager/bin/Debug/net6.0/ref/FileManager.dll
+/home/oqpin/RiderProjects/FileManager/FileManager/bin/Debug/net6.0/FileManager.pdb
+/home/oqpin/RiderProjects/FileManager/FileManager/obj/Debug/net6.0/FileManager.csproj.AssemblyReference.cache
+/home/oqpin/RiderProjects/FileManager/FileManager/obj/Debug/net6.0/FileManager.GeneratedMSBuildEditorConfig.editorconfig
+/home/oqpin/RiderProjects/FileManager/FileManager/obj/Debug/net6.0/FileManager.AssemblyInfoInputs.cache
+/home/oqpin/RiderProjects/FileManager/FileManager/obj/Debug/net6.0/FileManager.AssemblyInfo.cs
+/home/oqpin/RiderProjects/FileManager/FileManager/obj/Debug/net6.0/FileManager.csproj.CoreCompileInputs.cache
+/home/oqpin/RiderProjects/FileManager/FileManager/obj/Debug/net6.0/FileManager.dll
+/home/oqpin/RiderProjects/FileManager/FileManager/obj/Debug/net6.0/ref/FileManager.dll
+/home/oqpin/RiderProjects/FileManager/FileManager/obj/Debug/net6.0/FileManager.pdb
+/home/oqpin/RiderProjects/FileManager/FileManager/obj/Debug/net6.0/FileManager.genruntimeconfig.cache
