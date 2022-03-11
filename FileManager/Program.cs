@@ -11,19 +11,66 @@ namespace FileManager
             
             ShowDirectoriesTree(fullPath, 0);
             ShowFiles(fullPath);
-                
-            Console.ReadLine();
+
+            while (true)
+            {
+                // ввод команды
+                string? command = Console.ReadLine();
+                CommandHandler(command.Split(' '));
+            }
         }
 
         static void CommandHandler(string[] commandArgs)
         {
             switch (commandArgs[0].ToLower())
             {
-                //  копирование
-                case "cp":
+                // копирование папки
+                // copy [папка] [путь]
+                case "copydir":
+                {
+                    string sourcePath = @commandArgs[1];
+                    string targetPath = @commandArgs[2];
+
+                    try
+                    {
+                        if (Directory.Exists(sourcePath))
+                        {
+                            // если папка не существует она будет создана
+                            Directory.CreateDirectory(targetPath);
+
+                            string[] files = Directory.GetFiles(sourcePath);
+
+                            // Копирование файлов и перезаписывание если они существуют
+                            for (int i = 0; i < files.Length; i++)
+                            {
+                                string fileName = Path.GetFileName(files[i]);
+                                string destFile = Path.Combine(targetPath, fileName);
+
+                                File.Copy(files[i], destFile, true);
+                            }
+                        }
+                    }
+                    catch
+                    {
+                        Console.WriteLine("Во время выполнения команды произошла ошибка.");
+                    }
+                    
                     break;
+                }
+
                 
+                // копирование файла
+                // copy [файл] [путь]
+                case "copyfile":
+                {
+                    string sourcePath = @commandArgs[1];
+                    string targetPath = @commandArgs[2];
+                    break;
+                }
+
+                    
                 // удаление
+                // rm [файл]
                 case "rm":
                     break;
                 
