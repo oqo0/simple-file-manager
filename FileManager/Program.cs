@@ -50,29 +50,60 @@ namespace FileManager
                             }
                         }
                     }
-                    catch
+                    catch (Exception e)
                     {
-                        Console.WriteLine("Во время выполнения команды произошла ошибка.");
+                        Console.WriteLine(e);
                     }
                     
                     break;
                 }
 
-                
                 // копирование файла
                 // copy [файл] [путь]
                 case "copyfile":
                 {
-                    string sourcePath = @commandArgs[1];
+                    string sourceFile = @commandArgs[1];
                     string targetPath = @commandArgs[2];
+
+                    try
+                    {
+                        // Копирование файла и перезаписывание если он существует
+                        File.Copy(sourceFile, targetPath, true);
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e);
+                    }
+                    
                     break;
                 }
 
-                    
                 // удаление
                 // rm [файл]
                 case "rm":
+                {
+                    string filePath = @commandArgs[1];
+
+                    try
+                    {
+                        // удаление каталога и его содержимого
+                        File.Delete(filePath);
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e);
+                    }
+                    
                     break;
+                }
+                
+                // очистка консоли для удобства
+                // clear
+                case "clear":
+                {
+                    Console.Clear();
+                    break;
+                }
                 
                 default:
                     Console.WriteLine("Неизвестная команда.");
