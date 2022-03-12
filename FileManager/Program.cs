@@ -126,14 +126,20 @@ namespace FileManager
             
             for (int i = 0; i < directories.Length; i++)
             {
+                string outputString = String.Empty;
+                
                 // отступ при открытии папки
                 for (int j = 0; j <= recursionDepth; j++)
                 {
-                    Console.Write("├──");
+                    outputString += "├──";
                 }
                 
-                Console.WriteLine(directories[i]);
+                // информация о папке
+                DirectoryInfo dir = new DirectoryInfo(directories[i]);
                 
+                Console.WriteLine($"{outputString} {directories[i]}");
+
+
                 if (recursionDepth + 1 < fullPath.Length && Convert.ToString(directories[i]) == fullPath[recursionDepth + 1])
                 {
                     ShowDirectoriesTree(fullPath, recursionDepth + 1);
