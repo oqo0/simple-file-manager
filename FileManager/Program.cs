@@ -7,19 +7,20 @@ namespace FileManager
     {
         public static void Main()
         {
-            string[] fullPath = {"/", "/bin"};
+            // /home/oqpin
+            string[] fullPath = {"/", "/home", "/oqpin", "/Pictures/"};
             
             ShowDirectoriesTree(fullPath, 0);
-            ShowFiles(fullPath);
+            ShowFiles(fullPath, 1);
 
             while (true)
             {
                 // ввод команды
+                Console.Write(String.Join(" ", fullPath) + " > ");
                 string? command = Console.ReadLine();
                 CommandHandler(command.Split(' '));
             }
         }
-
         static void CommandHandler(string[] commandArgs)
         {
             switch (commandArgs[0].ToLower())
@@ -139,16 +140,25 @@ namespace FileManager
                 }
             }
         }
-        static void ShowFiles(string[] fullPath)
+        static void ShowFiles(string[] fullPath, int page)
         {
-            // Вывод файлов папки
+            // Постраничный вывод файлов папки
             /*
             ───────────────────────────────────────
-            File.txt    File.txt    File.txt
-            File.txt    File.txt    File.txt
+            File.txt
+            File.txt
+            File.txt
+            File.txt
+            File.txt
+            ──── 12 ───────────────────────────────────
             */
-            
-            Console.WriteLine("───────────────────────────────────────");
+
+            // линия во всю ширину консоли
+            for (int i = 0; i < Console.WindowWidth; i++)
+            {
+                Console.Write("─");
+            }
+            Console.WriteLine();
             
             string[] files = Directory.GetFiles(String.Concat(fullPath));
 
@@ -159,26 +169,22 @@ namespace FileManager
             {
                 
             }
-            
-            const int colonLength = 35;
-            const int colonAmount = 3;
-            
-            // вывод файлов в виде колонн
-            for (int i = 0; i < files.Length; i += colonAmount)
+
+            // вывод файлов и их свойств
+            for (int i = 0; i < files.Length; i += 1)
             {
-                // остановка перечисления после выхода за предел массива
-                try
-                {
-                    for (int k = 0; k < colonAmount; k++)
-                    {
-                        Console.WriteLine($"{files[i + k], colonLength}");
-                    }
-                }
-                catch (IndexOutOfRangeException)
-                {
-                    break;
-                }
+                FileInfo file = new FileInfo(files[i]);
+                Console.WriteLine($"{files[i], 45} {file.Length, 10} bytes {file.CreationTime.Date, 20}");
             }
+            
+            // линия во всю ширину консоли с номером страницы
+            string pageMessage = $"─── page: {page} ";
+            Console.Write(pageMessage);
+            for (int i = 0; i < Console.WindowWidth - pageMessage.Length; i++)
+            {
+                Console.Write("─");
+            }
+            Console.WriteLine();
         }
     }
 }
