@@ -33,6 +33,7 @@ namespace FileManager
 
             while (true)
             {
+                ShowHeader(fullPath);
                 ShowDirectoriesTree(fullPath, 0);
                 ShowFiles(fullPath, 1);
                 
@@ -138,6 +139,19 @@ namespace FileManager
                     Console.WriteLine("Неизвестная команда.");
                     break;
             }
+        }
+        static void ShowHeader(string[] fullPath)
+        {
+            // отображение полного пути
+            Console.WriteLine(fullPath.Last());
+            
+            // линия во всю ширину
+            for (int i = 0; i < Console.WindowWidth; i++)
+            {
+                Console.Write("─");
+            }
+            
+            Console.WriteLine();
         }
         static void ShowDirectoriesTree(string[] fullPath, int recursionDepth)
         {
