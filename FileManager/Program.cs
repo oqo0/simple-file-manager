@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 
 namespace FileManager
@@ -7,8 +8,8 @@ namespace FileManager
     {
         public static void Main()
         {
-            // /home/oqpin
-            string[] fullPath = {"/", "/home", "/oqpin", "/Pictures/"};
+            // /home/oqpin/Downloads
+            string[] fullPath = {"/", "/home", "/oqpin", "/Downloads"};
             
             ShowDirectoriesTree(fullPath, 0);
             ShowFiles(fullPath, 1);
@@ -150,46 +151,40 @@ namespace FileManager
         {
             // Постраничный вывод файлов папки
             /*
-            ───────────────────────────────────────
             File.txt
             File.txt
             File.txt
-            File.txt
-            File.txt
-            ──── 12 ───────────────────────────────────
+            ──── page: 1/2 ───────────────────────────────────
             */
-
-            // линия во всю ширину консоли
-            for (int i = 0; i < Console.WindowWidth; i++)
-            {
-                Console.Write("─");
-            }
-            Console.WriteLine();
+            
+            const float pageSize = 5;
             
             string[] files = Directory.GetFiles(String.Concat(fullPath));
-
-            const int pageSize = 5;
-
-            // постраничный вывод элементов
-            for (int e = 1; e <= pageSize; e++)
+            double maxPage = Math.Ceiling(files.Length / pageSize);
+            
+            // страница не может быть больше макс. значения или меньше 1
+            if (page > maxPage || page < 1)
             {
-                
-            }
-
-            // вывод файлов и их свойств
-            for (int i = 0; i < files.Length; i += 1)
-            {
-                FileInfo file = new FileInfo(files[i]);
-                Console.WriteLine($"{files[i], 45} {file.Length, 10} bytes {file.CreationTime.Date, 20}");
+                Console.WriteLine("Индекс страницы имеет недопустимое значение.");
+                return;
             }
             
-            // линия во всю ширину консоли с номером страницы
-            string pageMessage = $"─── page: {page} ";
-            Console.Write(pageMessage);
-            for (int i = 0; i < Console.WindowWidth - pageMessage.Length; i++)
+            // линия с номером страницы
+            Console.WriteLine($"\n─── page: {page}/{maxPage} ───────────────────────────");
+            
+            int startFileIndex = Convert.ToInt32((page - 1) * pageSize);
+            int endFileIndex = Convert.ToInt32((page - 1) * pageSize + pageSize);
+
+            for (int i = startFileIndex; i < endFileIndex; i += 1)
             {
-                Console.Write("─");
+                try
+                {
+                    FileInfo file = new FileInfo(files[i]);
+                    Console.WriteLine($"{file.Name,45} {file.CreationTime.Date,25} {file.Length,15} bytes");
+                }
+                catch (IndexOutOfRangeException) {}
             }
+            
             Console.WriteLine();
         }
     }
