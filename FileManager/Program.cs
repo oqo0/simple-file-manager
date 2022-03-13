@@ -175,7 +175,7 @@ namespace FileManager
             File.txt
             File.txt
             File.txt
-            ──── page: 1/2 ───────────────────────────────────
+            ──── страница: 1/2 ───────────────────────────────────
             */
             
             const float pageSize = 5;
