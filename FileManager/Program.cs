@@ -29,7 +29,7 @@ namespace FileManager
         public static void Main()
         {
             // используемый путь
-            string[] fullPath = {"/", "/home", "/oqpin", "/Downloads"};
+            string[] fullPath = { "/", "/home", "/home/oqpin" };
 
             while (true)
             {
@@ -141,33 +141,27 @@ namespace FileManager
         }
         static void ShowDirectoriesTree(string[] fullPath, int recursionDepth)
         {
-            /*
-            Вывод файлового дерева
-            ├──dir
-            ├──├──dir
-            ├──├──├──dir
+            // fullPath вида { "/", "/dir", "/dir/dir_2", "/dir/dir_2/dir_3" }
             
-            0  1  3 - глубина рекурсии (recursionDepth)
-            */
+            /* Вывод файлового дерева
+            ├──dir
+            ├──├──dir_2
+            ├──├──├──dir_3
+            0  1  3 - глубина рекурсии (recursionDepth) */
             
             string[] directories = Directory.GetDirectories(fullPath[recursionDepth]);
             
             for (int i = 0; i < directories.Length; i++)
             {
-                string outputString = String.Empty;
-                
-                // отступ при открытии папки
+                // отступ "├──" при открытии папки в зависимости от глубины рекурсии
                 for (int j = 0; j <= recursionDepth; j++)
                 {
-                    outputString += "├──";
+                    Console.Write("├──");
                 }
-                
-                // информация о папке
+
                 DirectoryInfo dir = new DirectoryInfo(directories[i]);
+                Console.WriteLine($"{dir.Name}");
                 
-                Console.WriteLine($"{outputString} {directories[i]}");
-
-
                 if (recursionDepth + 1 < fullPath.Length && Convert.ToString(directories[i]) == fullPath[recursionDepth + 1])
                 {
                     ShowDirectoriesTree(fullPath, recursionDepth + 1);
@@ -213,7 +207,6 @@ namespace FileManager
             
             Console.WriteLine();
         }
-
         static void PrintPageSeparator(int page, double maxPage)
         {
             // линия с номером страницы во всю ширину консоли
