@@ -195,9 +195,8 @@ namespace FileManager
                 Console.WriteLine("Индекс страницы имеет недопустимое значение.");
                 return;
             }
-            
-            // линия с номером страницы
-            Console.WriteLine($"\n─── page: {page}/{maxPage} ───────────────────────────");
+
+            PrintPageSeparator(page, maxPage);
             
             int startFileIndex = Convert.ToInt32((page - 1) * pageSize);
             int endFileIndex = Convert.ToInt32((page - 1) * pageSize + pageSize);
@@ -213,6 +212,23 @@ namespace FileManager
             }
             
             Console.WriteLine();
+        }
+
+        static void PrintPageSeparator(int page, double maxPage)
+        {
+            // линия с номером страницы во всю ширину консоли
+            
+            string pageSeparatorMessage = $"\n─── page: {page}/{maxPage} ";
+
+            // кол-во символов, которые нужно напечатать для того, чтобы сделать
+            // линию во всю ширину
+            int symbolsToPrint = Console.WindowWidth - pageSeparatorMessage.Length;
+            for (int i = 0; i < symbolsToPrint; i++)
+            {
+                pageSeparatorMessage += "─";
+            }
+            
+            Console.WriteLine(pageSeparatorMessage);
         }
         static void PathBuilder()
         {
