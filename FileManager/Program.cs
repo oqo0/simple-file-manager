@@ -2,28 +2,55 @@
 using System.Diagnostics;
 using System.IO;
 
+/*
+- Просмотр файловой структуры
+- Поддержка копирование файлов, каталогов
+- Поддержка удаление файлов, каталогов
+- Получение информации о размерах, системных атрибутов файла, каталога
+- Вывод файловой структуры должен быть постраничным
+- В конфигурационном файле должна быть настройка вывода количества элементов на страницу
+- При выходе должно сохраняться, последнее состояние
+- Должны быть комментарии в коде
+- Должна быть документация к проекту в формате md
+- Приложение должно обрабатывать непредвиденные ситуации (не падать)
+- При успешном выполнение предыдущих пунктов – реализовать сохранение ошибки в текстовом файле
+в каталоге errors/random_name_exception.txt
+- При успешном выполнение предыдущих пунктов – реализовать движение по истории команд
+(стрелочки вверх, вниз)
+- Команды должны быть консольного типа, как, например, консоль в Unix или Windows.
+Соответственно требуется создать парсер команд, который по минимуму использует стандартные
+методы по строкам.
+*/
+
 namespace FileManager
 {
     class FileManager
     {
         public static void Main()
         {
-            // /home/oqpin/Downloads
+            // используемый путь
             string[] fullPath = {"/", "/home", "/oqpin", "/Downloads"};
-            
-            ShowDirectoriesTree(fullPath, 0);
-            ShowFiles(fullPath, 1);
 
             while (true)
             {
+                ShowDirectoriesTree(fullPath, 0);
+                ShowFiles(fullPath, 1);
+                
                 // ввод команды
                 Console.Write(String.Join(" ", fullPath) + " > ");
                 string? command = Console.ReadLine();
                 CommandHandler(command.Split(' '));
+                
+                if (command.ToLower() == "end")
+                {
+                    return;
+                }
             }
         }
         static void CommandHandler(string[] commandArgs)
         {
+            Console.Clear();
+            
             switch (commandArgs[0].ToLower())
             {
                 // копирование папки
@@ -186,6 +213,10 @@ namespace FileManager
             }
             
             Console.WriteLine();
+        }
+        static void PathBuilder()
+        {
+            
         }
     }
 }
