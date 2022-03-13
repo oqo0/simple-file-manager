@@ -180,7 +180,7 @@ namespace FileManager
             
             const float pageSize = 5;
             
-            string[] files = Directory.GetFiles(String.Concat(fullPath));
+            string[] files = Directory.GetFiles(fullPath.Last());
             double maxPage = Math.Ceiling(files.Length / pageSize);
             
             // страница не может быть больше макс. значения или меньше 1
