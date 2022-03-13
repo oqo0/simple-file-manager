@@ -211,7 +211,7 @@ namespace FileManager
         {
             // линия с номером страницы во всю ширину консоли
             
-            string pageSeparatorMessage = $"\n─── page: {page}/{maxPage} ";
+            string pageSeparatorMessage = $"\n─── страница: {page}/{maxPage} ";
 
             // кол-во символов, которые нужно напечатать для того, чтобы сделать
             // линию во всю ширину
