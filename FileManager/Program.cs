@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Net.Security;
 
 /*
 - Поддержка копирование файлов, каталогов
@@ -26,7 +27,7 @@ namespace FileManager
 {
     public static class Global
     {
-        public static string[] fullPath = {"/", "/home", "/home/oqpin"}; // используемый путь
+        public static string[] fullPath = {"/", "/dev", "/dev/cpu"}; // используемый путь
         public static int filesPage = 1; // страница доступа к файлам
     }
     class FileManager
@@ -35,6 +36,9 @@ namespace FileManager
         {
             while (true)
             {
+                string[] fullPath = Global.fullPath;
+                int filesPage = Global.filesPage;
+                
                 ShowHeader(fullPath);
                 ShowDirectoriesTree(fullPath, 0);
                 ShowFiles(fullPath, filesPage);
@@ -57,18 +61,24 @@ namespace FileManager
             switch (commandArgs[0].ToLower())
             {
                 // изменение директории
-                // cd ..
-                // cd [директория]
                 case "cd":
                 {
                     switch (commandArgs[1].ToLower())
                     {
-                        // 
-                        case (".."):
+                        // перейти на директорию выше
+                        // cd -
+                        // cd ..
+                        case "-":
+                        case "..":
                         {
-                            
+                            // общий путь должен иметь минимум 1 аргумент
+                            if (Global.fullPath.Length != 1)
+                            {
+                                RemoveLastVariable();
+                            }
                             break;
                         }
+                        // cd [директория]
                         default:
                         {
                             Console.WriteLine("Указаны неверные аргументы.");
@@ -223,12 +233,14 @@ namespace FileManager
             string[] files = Directory.GetFiles(fullPath.Last());
             double maxPage = Math.Ceiling(files.Length / pageSize);
             
+            /*
             // страница не может быть больше макс. значения или меньше 1
             if (page > maxPage || page < 1)
             {
                 Console.WriteLine("Индекс страницы имеет недопустимое значение.");
                 return;
             }
+            */
 
             PrintPageSeparator(page, maxPage);
             
@@ -251,7 +263,7 @@ namespace FileManager
         {
             // линия с номером страницы во всю ширину консоли
             
-            string pageSeparatorMessage = $"\n─── Файлы страницы: {page}/{maxPage} ";
+            string pageSeparatorMessage = $"\n─── Файлы на странице: {page}/{maxPage} ";
 
             // кол-во символов, которые нужно напечатать для того, чтобы сделать
             // линию во всю ширину
@@ -298,6 +310,17 @@ namespace FileManager
                 result += "└── ";
             }
             return result;
+        }
+        static void RemoveLastVariable()
+        {
+            string[] newArray = new string[Global.fullPath.Length - 1];
+
+            for (int i = 0; i < newArray.Length; i++)
+            {
+                newArray[i] = Global.fullPath[i];
+            }
+
+            Global.fullPath = newArray;
         }
     }
 }
