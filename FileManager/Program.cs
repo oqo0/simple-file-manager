@@ -40,8 +40,19 @@ namespace FileManager
                 int filesPage = Global.filesPage;
                 
                 ShowHeader(fullPath);
-                ShowDirectoriesTree(fullPath, 0);
-                ShowFiles(fullPath, filesPage);
+                try
+                {
+                    ShowDirectoriesTree(fullPath, 0);
+                    ShowFiles(fullPath, filesPage);
+                }
+                catch (UnauthorizedAccessException)
+                {
+                    Console.WriteLine("Нет доступа.");
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("Произошла ошибка: " + e);
+                }
                 
                 // ввод команды
                 Console.Write(fullPath.Last() + " > ");
@@ -82,7 +93,7 @@ namespace FileManager
                         // cd [директория]
                         default:
                         {
-                            // папка (commandArgs[1]) должна иметь / в начале
+                            // папка (commandArgs[1]) должна иметь "/" в начале
                             if (commandArgs[1].Contains("/"))
                             {
                                 PathBuilder(commandArgs[1]);
@@ -342,7 +353,8 @@ namespace FileManager
             */
 
             string[] newArray = new string[Global.fullPath.Length + 1];
-
+            string finalPath = String.Empty;
+            
             // добаляем в новый массив всё кроме последнего значения
             for (int i = 0; i < newArray.Length - 1; i++)
             {
@@ -351,7 +363,14 @@ namespace FileManager
 
             // построение последнего элемента нового массива
             // finalPath = последний элемент Global.fullPath + новая папка
-            string finalPath = Global.fullPath[Global.fullPath.Length - 1] + folder;
+            if (Global.fullPath.Length == 1)
+            {
+                finalPath = folder;
+            }
+            else
+            {
+                finalPath = Global.fullPath[Global.fullPath.Length - 1] + folder;
+            }
             
             newArray[newArray.Length - 1] = finalPath;
             
