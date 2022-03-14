@@ -274,19 +274,6 @@ namespace FileManager
         {
             // отступ вида "├──" при открытии папки
 
-            /*
-            ├── dir
-            ├── dir
-            │   ├── dir2
-            │   ├── dir2
-            │   └── dir2
-            │       ├── dir2
-            │       └── dir3
-            ├── dir
-            ├── dir
-            ├── dir
-            */
-            
             string result = String.Empty;
 
             if (recursionDepth == 0)
