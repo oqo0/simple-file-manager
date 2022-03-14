@@ -38,17 +38,17 @@ namespace FileManager
     {
         public static void Main()
         {
-            // используемый путь
-            string[] fullPath = { "/", "/home", "/home/oqpin" };
+            string[] fullPath = {"/", "/home", "/home/oqpin"}; // используемый путь
+            int filesPage = 1; // страница доступа к файлам
 
             while (true)
             {
                 ShowHeader(fullPath);
                 ShowDirectoriesTree(fullPath, 0);
-                ShowFiles(fullPath, 1);
+                ShowFiles(fullPath, filesPage);
                 
                 // ввод команды
-                Console.Write(String.Join(" ", fullPath) + " > ");
+                Console.Write(fullPath.Last() + " > ");
                 string? command = Console.ReadLine();
                 CommandHandler(command.Split(' '));
                 
