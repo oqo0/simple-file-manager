@@ -78,10 +78,11 @@ namespace FileManager
                             }
                             break;
                         }
+                        
                         // cd [директория]
                         default:
                         {
-                            Console.WriteLine("Указаны неверные аргументы.");
+                            PathBuilder(commandArgs[1]);
                             break;
                         }
                     }
@@ -313,6 +314,8 @@ namespace FileManager
         }
         static void RemoveLastVariable()
         {
+            // удаление последнего элемента массива
+            
             string[] newArray = new string[Global.fullPath.Length - 1];
 
             for (int i = 0; i < newArray.Length; i++)
@@ -320,6 +323,34 @@ namespace FileManager
                 newArray[i] = Global.fullPath[i];
             }
 
+            Global.fullPath = newArray;
+        }
+        static void PathBuilder(string folder)
+        {
+            /*
+            folder - string вида "/папка"
+            построение полного пути вида:
+            {"/", "/dev", "/folder"};
+            */
+
+            string[] newArray = new string[Global.fullPath.Length + 1];
+            string finalPath = String.Empty;
+            
+            // добаляем в новый массив всё кроме последнего значения
+            for (int i = 0; i < newArray.Length - 1; i++)
+            {
+                newArray[i] = Global.fullPath[i];
+            }
+
+            // построение последнего элемента нового массива
+            for (int i = 1; i < Global.fullPath.Length; i++)
+            {
+                finalPath += Global.fullPath[i];
+            }
+            finalPath += folder;
+            
+            newArray[newArray.Length - 1] = finalPath;
+            
             Global.fullPath = newArray;
         }
     }
