@@ -190,21 +190,21 @@ namespace FileManager
         {
             // fullPath вида { "/", "/dir", "/dir/dir_2", "/dir/dir_2/dir_3" }
             
-            /* Вывод файлового дерева
-            ├──dir
-            ├──├──dir_2
-            ├──├──├──dir_3
-            0  1  3 - глубина рекурсии (recursionDepth) */
+            /*
+            Вывод файлового дерева
+            ├── dir
+            │   ├── dir2
+            │   └── dir2
+            │       └── dir3
+                0   1   3 - глубина рекурсии (recursionDepth)
+            */
             
             string[] directories = Directory.GetDirectories(fullPath[recursionDepth]);
             
             for (int i = 0; i < directories.Length; i++)
             {
-                // отступ "├──" при открытии папки в зависимости от глубины рекурсии
-                for (int j = 0; j <= recursionDepth; j++)
-                {
-                    Console.Write("├──");
-                }
+                string offset = OffsetBuilder(i, directories.Length, recursionDepth);
+                Console.Write(offset);
 
                 DirectoryInfo dir = new DirectoryInfo(directories[i]);
                 Console.WriteLine($"{dir.Name}");
@@ -270,9 +270,54 @@ namespace FileManager
             
             Console.WriteLine(pageSeparatorMessage);
         }
-        static void PathBuilder()
+        static string OffsetBuilder(int currentIndex, int directoriesLength, int recursionDepth)
         {
+            // отступ вида "├──" при открытии папки
+
+            /*
+            ├── dir
+            ├── dir
+            │   ├── dir2
+            │   ├── dir2
+            │   └── dir2
+            │       ├── dir2
+            │       └── dir3
+            ├── dir
+            ├── dir
+            ├── dir
+            */
             
+            string result = String.Empty;
+
+            if (recursionDepth == 0)
+            {
+                result += "├── ";
+                return result;
+            }
+            else
+            {
+                result += "│";
+            }
+
+            for (int i = 0; i < recursionDepth; i++)
+            {
+                result += "   ";
+
+                if (i != recursionDepth - 1)
+                {
+                    result += " ";
+                }
+            }
+
+            if (currentIndex != directoriesLength - 1)
+            {
+                result += "├── ";
+            }
+            else
+            {
+                result += "└── ";
+            }
+            return result;
         }
     }
 }
