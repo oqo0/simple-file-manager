@@ -203,6 +203,7 @@ namespace FileManager
             
             for (int i = 0; i < directories.Length; i++)
             {
+                // построение отступов вида "│   ├──"
                 string offset = OffsetBuilder(i, directories.Length, recursionDepth);
                 Console.Write(offset);
 
