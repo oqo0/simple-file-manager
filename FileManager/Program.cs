@@ -4,9 +4,6 @@ using System.IO;
 using System.Net.Security;
 
 /*
-- Поддержка копирование файлов, каталогов
-- Поддержка удаление файлов, каталогов
-- Получение информации о размерах, системных атрибутов файла, каталога
 - Вывод файловой структуры должен быть постраничным
 - В конфигурационном файле должна быть настройка вывода количества элементов на страницу
 - При выходе должно сохраняться, последнее состояние
@@ -15,9 +12,7 @@ using System.Net.Security;
 в каталоге errors/random_name_exception.txt
 - При успешном выполнение предыдущих пунктов – реализовать движение по истории команд
 (стрелочки вверх, вниз)
-*/
 
-/*
 Настройка отображение страницы - должно быть задано в конфигурационном файле
 При выходе нужно запоминать последнее состояние (активный каталог)
 Задание на звездочку: при нажатии вверх либо вниз движение по истории команд
@@ -29,6 +24,7 @@ namespace FileManager
     {
         public static string[] fullPath = {"/", "/dev", "/dev/cpu"}; // используемый путь
         public static int filesPage = 1; // страница доступа к файлам
+        public static readonly float filesPageSize = 5; // размер страницы в списке файлов
     }
     class FileManager
     {
@@ -40,20 +36,9 @@ namespace FileManager
                 int filesPage = Global.filesPage;
                 
                 ShowHeader(fullPath);
-                try
-                {
-                    ShowDirectoriesTree(fullPath, 0);
-                    ShowFiles(fullPath, filesPage);
-                }
-                catch (UnauthorizedAccessException)
-                {
-                    Console.WriteLine("Нет доступа.");
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine("Произошла ошибка: " + e);
-                }
-                
+                ShowDirectoriesTree(fullPath, 0);
+                ShowFiles(fullPath, filesPage);
+
                 // ввод команды
                 Console.Write(fullPath.Last() + " > ");
                 string? command = Console.ReadLine();
@@ -220,8 +205,23 @@ namespace FileManager
             │       └── dir3
                 0   1   3 - глубина рекурсии (recursionDepth)
             */
+
+            string[] directories;
             
-            string[] directories = Directory.GetDirectories(fullPath[recursionDepth]);
+            try
+            {
+                directories = Directory.GetDirectories(fullPath[recursionDepth]);
+            }
+            catch (UnauthorizedAccessException)
+            {
+                Console.WriteLine("Нет доступа.");
+                return;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Произошла ошибка: " + e);
+                return;
+            }
             
             for (int i = 0; i < directories.Length; i++)
             {
@@ -248,20 +248,27 @@ namespace FileManager
             ──── страница: 1/2 ───────────────────────────────────
             */
             
-            const float pageSize = 5;
+            float pageSize = Global.filesPageSize;
             
-            string[] files = Directory.GetFiles(fullPath.Last());
-            double maxPage = Math.Ceiling(files.Length / pageSize);
-            
-            /*
-            // страница не может быть больше макс. значения или меньше 1
-            if (page > maxPage || page < 1)
+            string[] files;
+
+            try
             {
-                Console.WriteLine("Индекс страницы имеет недопустимое значение.");
+                files = Directory.GetFiles(fullPath.Last());
+            }
+            catch (UnauthorizedAccessException)
+            {
+                Console.WriteLine("Нет доступа.");
                 return;
             }
-            */
-
+            catch (Exception e)
+            {
+                Console.WriteLine("Произошла ошибка: " + e);
+                return;
+            }
+            
+            double maxPage = Math.Ceiling(files.Length / pageSize);
+            
             PrintPageSeparator(page, maxPage);
             
             int startFileIndex = Convert.ToInt32((page - 1) * pageSize);
