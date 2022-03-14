@@ -82,7 +82,15 @@ namespace FileManager
                         // cd [директория]
                         default:
                         {
-                            PathBuilder(commandArgs[1]);
+                            // папка (commandArgs[1]) должна иметь / в начале
+                            if (commandArgs[1].Contains("/"))
+                            {
+                                PathBuilder(commandArgs[1]);
+                            }
+                            else
+                            {
+                                PathBuilder("/" + commandArgs[1]);
+                            }
                             break;
                         }
                     }
@@ -330,12 +338,11 @@ namespace FileManager
             /*
             folder - string вида "/папка"
             построение полного пути вида:
-            {"/", "/dev", "/folder"};
+            {"/", "/dev", "/dev/folder"};
             */
 
             string[] newArray = new string[Global.fullPath.Length + 1];
-            string finalPath = String.Empty;
-            
+
             // добаляем в новый массив всё кроме последнего значения
             for (int i = 0; i < newArray.Length - 1; i++)
             {
@@ -343,11 +350,8 @@ namespace FileManager
             }
 
             // построение последнего элемента нового массива
-            for (int i = 1; i < Global.fullPath.Length; i++)
-            {
-                finalPath += Global.fullPath[i];
-            }
-            finalPath += folder;
+            // finalPath = последний элемент Global.fullPath + новая папка
+            string finalPath = Global.fullPath[Global.fullPath.Length - 1] + folder;
             
             newArray[newArray.Length - 1] = finalPath;
             
