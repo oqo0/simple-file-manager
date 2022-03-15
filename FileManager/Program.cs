@@ -5,11 +5,9 @@ using System.Net.Security;
 using Newtonsoft.Json;
 
 /*
+- вывод файлов фикс
+- переход через полный путь cd /dir/dir/dir
 - Должна быть документация к проекту в формате md
-- При успешном выполнение предыдущих пунктов – реализовать сохранение ошибки в текстовом файле
-в каталоге errors/random_name_exception.txt
-- При успешном выполнение предыдущих пунктов – реализовать движение по истории команд
-(стрелочки вверх, вниз)
 */
 
 namespace FileManager
@@ -23,12 +21,11 @@ namespace FileManager
     }
     public class Settings
     {
-        public float PageSize { get; }
+        public float FilesPageSize { get; }
         public string FinishCommand { get; }
-        
-        public Settings(float pageSize, string finishCommand)
+        public Settings(float filesPageSize, string finishCommand)
         {
-            PageSize = pageSize;
+            FilesPageSize = filesPageSize;
             FinishCommand = finishCommand;
         }
     }
@@ -49,13 +46,13 @@ namespace FileManager
         {
             // чтение конфигурационного файла с настройками
             string settingsLine = File.ReadAllText("settings.json");
-            Settings settings = JsonConvert.DeserializeObject<Settings>(settingsLine);
-            Global.filesPageSize = settings.PageSize;
+            Settings? settings = JsonConvert.DeserializeObject<Settings>(settingsLine);
+            Global.filesPageSize = settings.FilesPageSize;
             Global.finishCommand = settings.FinishCommand;
             
             // чтение конфигурационного файла с сохранённой информацией
             string savedDataLine = File.ReadAllText("savedData.json");
-            Data data = JsonConvert.DeserializeObject<Data>(savedDataLine);
+            Data? data = JsonConvert.DeserializeObject<Data>(savedDataLine);
             Global.fullPath = data.FullPath;
             Global.filesPage = data.FilesPage;
 
