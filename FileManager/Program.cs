@@ -2,20 +2,15 @@
 using System.Diagnostics;
 using System.IO;
 using System.Net.Security;
+using Newtonsoft.Json;
 
 /*
-- Вывод файловой структуры должен быть постраничным
-- В конфигурационном файле должна быть настройка вывода количества элементов на страницу
 - При выходе должно сохраняться, последнее состояние
 - Должна быть документация к проекту в формате md
 - При успешном выполнение предыдущих пунктов – реализовать сохранение ошибки в текстовом файле
 в каталоге errors/random_name_exception.txt
 - При успешном выполнение предыдущих пунктов – реализовать движение по истории команд
 (стрелочки вверх, вниз)
-
-Настройка отображение страницы - должно быть задано в конфигурационном файле
-При выходе нужно запоминать последнее состояние (активный каталог)
-Задание на звездочку: при нажатии вверх либо вниз движение по истории команд
 */
 
 namespace FileManager
@@ -23,13 +18,39 @@ namespace FileManager
     public static class Global
     {
         public static string[] fullPath = {"/", "/dev", "/dev/cpu"}; // используемый путь
-        public static int filesPage = 1; // страница доступа к файлам
-        public static readonly float filesPageSize = 5; // размер страницы в списке файлов
+        public static int filesPage = 1; // страница доступа к файлам, на которой находится пользователь
+        public static float filesPageSize = 5; // размер страницы в списке файлов
+        public static string finishCommand = "end";
+    }
+    public class Settings
+    {
+        public float PageSize { get; }
+        public string FinishCommand { get; }
+        
+        public Settings(float pageSize, string finishCommand)
+        {
+            PageSize = pageSize;
+            FinishCommand = finishCommand;
+        }
     }
     class FileManager
     {
         public static void Main()
         {
+            // чтение конфигурационного файла с настройками
+            string line = File.ReadAllText("settings.json");
+            Settings settings = JsonConvert.DeserializeObject<Settings>(line);
+
+            Global.filesPageSize = settings.PageSize;
+            Global.finishCommand = settings.FinishCommand;
+            
+            /*
+            // запись
+            Settings test = new Settings(5, "end");
+            string json = JsonConvert.SerializeObject(test);
+            File.WriteAllText("settings.json", json);
+            */
+            
             while (true)
             {
                 string[] fullPath = Global.fullPath;
@@ -44,7 +65,8 @@ namespace FileManager
                 string? command = Console.ReadLine();
                 CommandHandler(command.Split(' '));
                 
-                if (command.ToLower() == "end")
+                // окончание работы
+                if (command.ToLower() == Global.finishCommand)
                 {
                     return;
                 }

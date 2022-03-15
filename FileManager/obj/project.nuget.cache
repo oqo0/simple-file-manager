@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "p+6YxKlupZzJEb10ErIcpw3ILoDPTdYd4L0cdk7gUBk9rqpSm0rUqxh7jCyPUX7E/hc3nJ+j5Tq/uxu1+RQ5GQ==",
+  "dgSpecHash": "9lQsXxhb7JTJabzJJMb0f6wMpEuyxbEqTID3hYKlybBkRhMua6eQ18gYD8Ht42PrPCoOV3tUqUREKBbHIQK10w==",
   "success": true,
   "projectFilePath": "/home/oqpin/RiderProjects/FileManager/FileManager/FileManager.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "/home/oqpin/.nuget/packages/newtonsoft.json/13.0.1/newtonsoft.json.13.0.1.nupkg.sha512"
+  ],
   "logs": []
 }
