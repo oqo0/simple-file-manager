@@ -5,7 +5,6 @@ using System.Net.Security;
 using Newtonsoft.Json;
 
 /*
-- При выходе должно сохраняться, последнее состояние
 - Должна быть документация к проекту в формате md
 - При успешном выполнение предыдущих пунктов – реализовать сохранение ошибки в текстовом файле
 в каталоге errors/random_name_exception.txt
@@ -33,7 +32,6 @@ namespace FileManager
             FinishCommand = finishCommand;
         }
     }
-
     public class Data
     {
         public string[] FullPath { get; }
@@ -160,6 +158,7 @@ namespace FileManager
                     catch (Exception e)
                     {
                         Console.WriteLine(e);
+                        SaveError(e);
                     }
                     
                     break;
@@ -180,6 +179,7 @@ namespace FileManager
                     catch (Exception e)
                     {
                         Console.WriteLine(e);
+                        SaveError(e);
                     }
                     
                     break;
@@ -199,6 +199,7 @@ namespace FileManager
                     catch (Exception e)
                     {
                         Console.WriteLine(e);
+                        SaveError(e);
                     }
                     
                     break;
@@ -249,14 +250,16 @@ namespace FileManager
             {
                 directories = Directory.GetDirectories(fullPath[recursionDepth]);
             }
-            catch (UnauthorizedAccessException)
+            catch (UnauthorizedAccessException e)
             {
                 Console.WriteLine("Нет доступа.");
+                SaveError(e);
                 return;
             }
             catch (Exception e)
             {
                 Console.WriteLine("Произошла ошибка: " + e);
+                SaveError(e);
                 return;
             }
             
@@ -293,14 +296,16 @@ namespace FileManager
             {
                 files = Directory.GetFiles(fullPath.Last());
             }
-            catch (UnauthorizedAccessException)
+            catch (UnauthorizedAccessException e)
             {
                 Console.WriteLine("Нет доступа.");
+                SaveError(e);
                 return;
             }
             catch (Exception e)
             {
                 Console.WriteLine("Произошла ошибка: " + e);
+                SaveError(e);
                 return;
             }
             
@@ -318,7 +323,10 @@ namespace FileManager
                     FileInfo file = new FileInfo(files[i]);
                     Console.WriteLine($"{file.Name,45} {file.CreationTime.Date,25} {file.Length,15} bytes");
                 }
-                catch (IndexOutOfRangeException) {}
+                catch (IndexOutOfRangeException e)
+                {
+                    SaveError(e);
+                }
             }
             
             Console.WriteLine();
@@ -419,6 +427,22 @@ namespace FileManager
             newArray[newArray.Length - 1] = finalPath;
             
             Global.fullPath = newArray;
+        }
+        static void SaveError(Exception e)
+        {
+            // сохранение информации об ошибках в файлы .txt в папку /errors/
+            
+            DateTime time = DateTime.Now;
+            string filePath = $"errors/error_{time.Year}_{time.Month}_{time.Day}_{time.Hour}_{time.Minute}_{time.Second}.txt";
+
+            string errorMessage = Convert.ToString(e);
+            
+            // создать директорию и файл
+            Directory.CreateDirectory("errors");
+            var file = File.Create(filePath);
+            file.Close();
+            
+            File.WriteAllText(filePath, errorMessage);
         }
     }
 }
