@@ -16,3 +16,4 @@
 /home/oqpin/RiderProjects/FileManager/FileManager/bin/Debug/net6.0/settings.json
 /home/oqpin/RiderProjects/FileManager/FileManager/bin/Debug/net6.0/Newtonsoft.Json.dll
 /home/oqpin/RiderProjects/FileManager/FileManager/obj/Debug/net6.0/FileManager.csproj.CopyComplete
+/home/oqpin/RiderProjects/FileManager/FileManager/bin/Debug/net6.0/savedData.json

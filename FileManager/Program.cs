@@ -33,24 +33,34 @@ namespace FileManager
             FinishCommand = finishCommand;
         }
     }
+
+    public class Data
+    {
+        public string[] FullPath { get; }
+        public int FilesPage { get; }
+
+        public Data(string[] fullPath, int filesPage)
+        {
+            FullPath = fullPath;
+            FilesPage = filesPage;
+        }
+    }
     class FileManager
     {
         public static void Main()
         {
             // чтение конфигурационного файла с настройками
-            string line = File.ReadAllText("settings.json");
-            Settings settings = JsonConvert.DeserializeObject<Settings>(line);
-
+            string settingsLine = File.ReadAllText("settings.json");
+            Settings settings = JsonConvert.DeserializeObject<Settings>(settingsLine);
             Global.filesPageSize = settings.PageSize;
             Global.finishCommand = settings.FinishCommand;
             
-            /*
-            // запись
-            Settings test = new Settings(5, "end");
-            string json = JsonConvert.SerializeObject(test);
-            File.WriteAllText("settings.json", json);
-            */
-            
+            // чтение конфигурационного файла с сохранённой информацией
+            string savedDataLine = File.ReadAllText("savedData.json");
+            Data data = JsonConvert.DeserializeObject<Data>(savedDataLine);
+            Global.fullPath = data.FullPath;
+            Global.filesPage = data.FilesPage;
+
             while (true)
             {
                 string[] fullPath = Global.fullPath;
@@ -68,6 +78,11 @@ namespace FileManager
                 // окончание работы
                 if (command.ToLower() == Global.finishCommand)
                 {
+                    // сохранение данных
+                    Data dataSave = new Data(Global.fullPath, Global.filesPage);
+                    string json = JsonConvert.SerializeObject(dataSave);
+                    File.WriteAllText("savedData.json", json);
+
                     return;
                 }
             }
