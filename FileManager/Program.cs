@@ -363,7 +363,7 @@ namespace FileManager
 
                 if (i != recursionDepth - 1)
                 {
-                    result += " ";
+                    result += "│";
                 }
             }
 
