@@ -155,14 +155,6 @@ namespace FileManager
                     
                     break;
                 }
-                
-                // изменение номера отображаемой страницы
-                // page [страница]
-                case "page":
-                {
-                    Global.filesPage = Convert.ToInt32(commandArgs[1]);
-                    break;
-                }
 
                 // копирование файла
                 // copy [файл] [путь]
@@ -205,6 +197,14 @@ namespace FileManager
                     break;
                 }
 
+                // изменение номера отображаемой страницы
+                // page [страница]
+                case "page":
+                {
+                    Global.filesPage = Convert.ToInt32(commandArgs[1]);
+                    break;
+                }
+                
                 default:
                 {
                     Console.WriteLine("Неизвестная команда.");
