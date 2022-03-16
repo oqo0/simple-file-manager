@@ -65,8 +65,8 @@ namespace FileManager
                 string? command = Console.ReadLine();
                 CommandHandler(command.Split(' '));
                 
-                // завершение работы
-                if (command.ToLower() == Global.finishCommand)
+                bool finishProgram = command.ToLower() == Global.finishCommand;
+                if (finishProgram)
                 {
                     // сохранение данных
                     Data dataSave = new Data(Global.fullPath, Global.filesPage);
@@ -94,7 +94,6 @@ namespace FileManager
                         case "-":
                         case "..":
                         {
-                            // общий путь должен иметь минимум 1 аргумент
                             if (Global.fullPath.Length != 1)
                             {
                                 RemoveLastVariable();
@@ -102,11 +101,13 @@ namespace FileManager
                             break;
                         }
                         
+                        // перейти в директорию
                         // cd [директория]
                         default:
                         {
                             // папка (commandArgs[1]) должна иметь "/" в начале
-                            if (commandArgs[1].Contains("/"))
+                            bool folderNameHasSlash = commandArgs[1].Contains("/");
+                            if (folderNameHasSlash)
                             {
                                 PathBuilder(commandArgs[1]);
                             }
@@ -266,7 +267,9 @@ namespace FileManager
                 DirectoryInfo dir = new DirectoryInfo(directories[i]);
                 Console.WriteLine($"{dir.Name}");
                 
-                if (recursionDepth + 1 < fullPath.Length && Convert.ToString(directories[i]) == fullPath[recursionDepth + 1])
+                bool recursionDepthIsNotFinished = recursionDepth + 1 < fullPath.Length;
+                bool currentDirIsInPath = Convert.ToString(directories[i]) == fullPath[recursionDepth + 1];
+                if (recursionDepthIsNotFinished && currentDirIsInPath)
                 {
                     ShowDirectoriesTree(fullPath, recursionDepth + 1);
                 }
