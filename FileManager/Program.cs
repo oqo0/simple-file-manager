@@ -4,12 +4,6 @@ using System.IO;
 using System.Net.Security;
 using Newtonsoft.Json;
 
-/*
-- вывод файлов фикс
-- переход через полный путь cd /dir/dir/dir
-- Должна быть документация к проекту в формате md
-*/
-
 namespace FileManager
 {
     public static class Global
@@ -56,6 +50,7 @@ namespace FileManager
             Global.fullPath = data.FullPath;
             Global.filesPage = data.FilesPage;
 
+            // цикл программы
             while (true)
             {
                 string[] fullPath = Global.fullPath;
@@ -70,7 +65,7 @@ namespace FileManager
                 string? command = Console.ReadLine();
                 CommandHandler(command.Split(' '));
                 
-                // окончание работы
+                // завершение работы
                 if (command.ToLower() == Global.finishCommand)
                 {
                     // сохранение данных
@@ -160,6 +155,14 @@ namespace FileManager
                     
                     break;
                 }
+                
+                // изменение номера отображаемой страницы
+                // page [страница]
+                case "page":
+                {
+                    Global.filesPage = Convert.ToInt32(commandArgs[1]);
+                    break;
+                }
 
                 // копирование файла
                 // copy [файл] [путь]
@@ -201,18 +204,12 @@ namespace FileManager
                     
                     break;
                 }
-                
-                // очистка консоли для удобства
-                // clear
-                case "clear":
-                {
-                    Console.Clear();
-                    break;
-                }
-                
+
                 default:
+                {
                     Console.WriteLine("Неизвестная команда.");
                     break;
+                }
             }
         }
         static void ShowHeader(string[] fullPath)
