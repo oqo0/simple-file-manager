@@ -8,10 +8,10 @@ namespace FileManager
 {
     public static class Global
     {
-        public static string[] fullPath = {"/", "/dev", "/dev/cpu"}; // используемый путь
-        public static int filesPage = 1; // страница доступа к файлам, на которой находится пользователь
-        public static float filesPageSize = 5; // размер страницы в списке файлов
-        public static string finishCommand = "end";
+        public static string[] FullPath = {"/", "/dev", "/dev/cpu"}; // используемый путь
+        public static int FilesPage = 1; // страница доступа к файлам, на которой находится пользователь
+        public static float FilesPageSize = 5; // размер страницы в списке файлов
+        public static string FinishCommand = "end";
     }
     public class Settings
     {
@@ -41,20 +41,20 @@ namespace FileManager
             // чтение конфигурационного файла с настройками
             string settingsLine = File.ReadAllText("settings.json");
             Settings? settings = JsonConvert.DeserializeObject<Settings>(settingsLine);
-            Global.filesPageSize = settings.FilesPageSize;
-            Global.finishCommand = settings.FinishCommand;
+            Global.FilesPageSize = settings.FilesPageSize;
+            Global.FinishCommand = settings.FinishCommand;
             
             // чтение конфигурационного файла с сохранённой информацией
             string savedDataLine = File.ReadAllText("savedData.json");
             Data? data = JsonConvert.DeserializeObject<Data>(savedDataLine);
-            Global.fullPath = data.FullPath;
-            Global.filesPage = data.FilesPage;
+            Global.FullPath = data.FullPath;
+            Global.FilesPage = data.FilesPage;
 
             // цикл программы
             while (true)
             {
-                string[] fullPath = Global.fullPath;
-                int filesPage = Global.filesPage;
+                string[] fullPath = Global.FullPath;
+                int filesPage = Global.FilesPage;
                 
                 ShowHeader(fullPath);
                 ShowDirectoriesTree(fullPath, 0);
@@ -65,11 +65,11 @@ namespace FileManager
                 string? command = Console.ReadLine();
                 CommandHandler(command.Split(' '));
                 
-                bool finishProgram = command.ToLower() == Global.finishCommand;
+                bool finishProgram = command.ToLower() == Global.FinishCommand;
                 if (finishProgram)
                 {
                     // сохранение данных
-                    Data dataSave = new Data(Global.fullPath, Global.filesPage);
+                    Data dataSave = new Data(Global.FullPath, Global.FilesPage);
                     string json = JsonConvert.SerializeObject(dataSave);
                     File.WriteAllText("savedData.json", json);
 
@@ -94,7 +94,7 @@ namespace FileManager
                         case "-":
                         case "..":
                         {
-                            if (Global.fullPath.Length != 1)
+                            if (Global.FullPath.Length != 1)
                             {
                                 RemoveLastVariable();
                             }
@@ -202,7 +202,7 @@ namespace FileManager
                 // page [страница]
                 case "page":
                 {
-                    Global.filesPage = Convert.ToInt32(commandArgs[1]);
+                    Global.FilesPage = Convert.ToInt32(commandArgs[1]);
                     break;
                 }
                 
@@ -284,7 +284,7 @@ namespace FileManager
             ──── страница: 1/2 ───────────────────────────────────
             */
             
-            float pageSize = Global.filesPageSize;
+            float pageSize = Global.FilesPageSize;
             
             string[] files;
 
@@ -383,14 +383,14 @@ namespace FileManager
         {
             // удаление последнего элемента массива
             
-            string[] newArray = new string[Global.fullPath.Length - 1];
+            string[] newArray = new string[Global.FullPath.Length - 1];
 
             for (int i = 0; i < newArray.Length; i++)
             {
-                newArray[i] = Global.fullPath[i];
+                newArray[i] = Global.FullPath[i];
             }
 
-            Global.fullPath = newArray;
+            Global.FullPath = newArray;
         }
         static void PathBuilder(string folder)
         {
@@ -400,29 +400,29 @@ namespace FileManager
             {"/", "/dev", "/dev/folder"};
             */
 
-            string[] newArray = new string[Global.fullPath.Length + 1];
+            string[] newArray = new string[Global.FullPath.Length + 1];
             string finalPath = String.Empty;
             
             // добаляем в новый массив всё кроме последнего значения
             for (int i = 0; i < newArray.Length - 1; i++)
             {
-                newArray[i] = Global.fullPath[i];
+                newArray[i] = Global.FullPath[i];
             }
 
             // построение последнего элемента нового массива
-            // finalPath = последний элемент Global.fullPath + новая папка
-            if (Global.fullPath.Length == 1)
+            // finalPath = последний элемент Global.FullPath + новая папка
+            if (Global.FullPath.Length == 1)
             {
                 finalPath = folder;
             }
             else
             {
-                finalPath = Global.fullPath[Global.fullPath.Length - 1] + folder;
+                finalPath = Global.FullPath[Global.FullPath.Length - 1] + folder;
             }
             
             newArray[newArray.Length - 1] = finalPath;
             
-            Global.fullPath = newArray;
+            Global.FullPath = newArray;
         }
         static void SaveError(Exception e)
         {
