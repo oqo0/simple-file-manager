@@ -267,9 +267,7 @@ namespace FileManager
                 DirectoryInfo dir = new DirectoryInfo(directories[i]);
                 Console.WriteLine($"{dir.Name}");
                 
-                bool recursionDepthIsNotFinished = recursionDepth + 1 < fullPath.Length;
-                bool currentDirIsInPath = Convert.ToString(directories[i]) == fullPath[recursionDepth + 1];
-                if (recursionDepthIsNotFinished && currentDirIsInPath)
+                if (recursionDepth + 1 < fullPath.Length && Convert.ToString(directories[i]) == fullPath[recursionDepth + 1])
                 {
                     ShowDirectoriesTree(fullPath, recursionDepth + 1);
                 }
