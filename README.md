@@ -1,7 +1,8 @@
 ### Simple File Manager
 Простой консольный файловый менеджер (тестировался только на Linux).
 
-![image info](./img/img1)
+<a href="url"><img src="./img/img1.png" height="auto" width="200" style="border-radius:50%"></a>
+
 #### Функции:
 - Просмотр файловой структуры в виде файлового дерева.
 - Копирование файлов \ каталогов.
